@@ -15,8 +15,9 @@ mvn clean package
 java -jar ./target/event-0.0.1-SNAPSHOT.jar
 ```
 
-#API
+# API
 
+```bash
 Get all events
 GET /api/events?page={pageNumber}
 
@@ -49,5 +50,4 @@ POST /api/user/register
 
 Get user by username
 GET /api/user/{userName}
-
-
+```
