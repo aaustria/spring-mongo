@@ -21,7 +21,8 @@ public class ExecutionTimeLogger {
         LOGGER.info("A create request was issued for : "+ event);
     }
 
-    @Around("execution(* com.event.services.EventService(..))")
+//    @Around("execution(* com.event.services.EventService(..))")
+    @Around("execution(* com.event.services.EventService.createEvent(..))")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         final long start = System.currentTimeMillis();
 
