@@ -5,6 +5,7 @@ import com.event.entities.EventRepository;
 import com.event.entities.User;
 import com.event.entities.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,12 @@ public class EventServiceImpl implements EventService {
         event.setStart(resetTime(event.getStart()));
         event.setEnd(resetTime(event.getEnd()));
         event.setCreatedDate(new Date());
-        return eventRepository.save(event);
+        try {
+            return eventRepository.save(event);
+        } catch (DuplicateKeyException ex) {
+            throw new IllegalArgumentException("Duplicate event title");
+        }
+
     }
 
     /**

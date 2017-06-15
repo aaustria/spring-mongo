@@ -1,7 +1,7 @@
 package com.event.controllers;
 
 import com.event.entities.Event;
-import com.event.services.EventServiceImpl;
+import com.event.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.Page;
@@ -28,10 +28,10 @@ import java.util.List;
 public class EventController {
     private int pageSize;
 
-    EventServiceImpl eventService;
+    EventService eventService;
 
     @Autowired
-    public EventController(EventServiceImpl eventService, PaginationSettings pageSettings) {
+    public EventController(EventService eventService, PaginationSettings pageSettings) {
         this.eventService = eventService;
         this.pageSize = Integer.parseInt(pageSettings.getSize());
     }
@@ -74,7 +74,11 @@ public class EventController {
 
     @RequestMapping(value="/event", method=RequestMethod.POST)
     ResponseEntity createEvent(@RequestBody Event event) {
-        eventService.createEvent(event);
+        try {
+            eventService.createEvent(event);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
